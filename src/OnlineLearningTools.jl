@@ -15,7 +15,6 @@ Equvalent to:
     end
 
 The following assumptions are made:
-    - `fun!' returns `nothing`
     - `fun!` may be a closure but it does not contain writable buffers
     - `state` is both read and modified by `fun!`
     - `scratch` may be written to by fun! but its initial contents are ignored
@@ -60,9 +59,15 @@ function reverse(::RevConfig,
                  state::Annotation,
                  scratch::Annotation,
                  params::Annotation)
+
+    function f!(st, scr, p)
+        fun!.val(st,scr,p)
+        return
+    end
+
     dstate = state.dval
     for i in (n.val):-1:1
-        autodiff(Reverse, fun!, DuplicatedNoNeed(tape[i], dstate), scratch, params)
+        autodiff(Reverse, f!, DuplicatedNoNeed(tape[i], dstate), scratch, params)
     end
     return nothing, nothing, nothing, nothing, nothing
 end

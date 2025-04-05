@@ -15,7 +15,7 @@ end
 function fun!(state, params, scratch)
     @. scratch = params * state
     @. state = scratch
-    return nothing # required !
+    #    return nothing # not required any more
 end
 
 L2(x, y) = sum((x - y) .^ 2)
