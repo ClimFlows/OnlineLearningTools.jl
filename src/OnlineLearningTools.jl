@@ -1,6 +1,6 @@
 module OnlineLearningTools
 
-using Enzyme: Reverse, Annotation, Const, Duplicated, MixedDuplicated, DuplicatedNoNeed, autodiff 
+using Enzyme: Reverse, Annotation, Const, DuplicatedNoNeed, autodiff 
 
 using Enzyme.EnzymeRules: RevConfig, AugmentedReturn
 import Enzyme.EnzymeRules: reverse, augmented_primal
@@ -60,30 +60,12 @@ function reverse(::RevConfig,
                  state::Annotation,
                  scratch::Annotation,
                  params::Annotation)
-#=
-    function f!(st, scr, p)
-        fun!.val(st,scr,p)
-        return
-    end
-=#
     dstate = state.dval
     for i in (n.val):-1:1
-#        autodiff(Reverse, Const(f!), DuplicatedNoNeed(tape[i], dstate), scratch, params)
-#        autodiff(Reverse, no_return(fun!), DuplicatedNoNeed(tape[i], dstate), scratch, params)
         autodiff(Reverse, fun!, Const, DuplicatedNoNeed(tape[i], dstate), scratch, params)
     end
     return nothing, nothing, nothing, nothing, nothing
 end
-
-#=
-no_return_(fun!) = function(state, scratch, params)
-    fun!(state, scratch, params)
-    return nothing
-end
-no_return(fun!::Duplicated) = Duplicated(no_return_(fun!.val), no_return_(fun!.dval))
-no_return(fun!::MixedDuplicated) = MixedDuplicated(no_return_(fun!.val), Base.RefValue(no_return_(fun!.dval[])))
-no_return(fun!::Const) = Const(no_return_(fun!.val))
-=#
 
 """
     c = rcopy(x)
