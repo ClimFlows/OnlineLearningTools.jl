@@ -1,6 +1,6 @@
 module OnlineLearningTools
 
-using Enzyme: Reverse, Annotation, Const, Duplicated, DuplicatedNoNeed, autodiff 
+using Enzyme: Reverse, Annotation, Const, DuplicatedNoNeed, autodiff 
 
 using Enzyme.EnzymeRules: RevConfig, AugmentedReturn
 import Enzyme.EnzymeRules: reverse, augmented_primal
@@ -13,11 +13,12 @@ Equvalent to:
     for i in 1:n
         fun!(state, scratch, params)
     end
+    return nothing
 
 The following assumptions are made:
     - `fun!` may be a closure but it does not contain writable buffers
     - `state` is both read and modified by `fun!`
-    - `scratch` may be written to by fun! but its initial contents are ignored
+    - `scratch` may be written to by fun! but values passed to `fun!` are ignored
     - `params` are read but not modified by `fun!`
     - function `rcopy(state)` is implemented correctly.
 
@@ -36,7 +37,7 @@ end
 function augmented_primal(::RevConfig,
                           ::Const{typeof(repeat)},
                           ::Type{<:Annotation},
-                          fun!::Annotation{<:Function},
+                          fun!::Annotation,
                           n::Annotation,
                           state::Annotation,
                           scratch::Annotation,
@@ -54,20 +55,14 @@ function reverse(::RevConfig,
                  ::Const{typeof(repeat)},
                  ::Type{<:Annotation},
                  tape,
-                 fun!::Annotation{<:Function},
+                 fun!::Annotation,
                  n::Annotation,
                  state::Annotation,
                  scratch::Annotation,
                  params::Annotation)
-
-    function f!(st, scr, p)
-        fun!.val(st,scr,p)
-        return
-    end
-
     dstate = state.dval
     for i in (n.val):-1:1
-        autodiff(Reverse, f!, DuplicatedNoNeed(tape[i], dstate), scratch, params)
+        autodiff(Reverse, fun!, Const, DuplicatedNoNeed(tape[i], dstate), scratch, params)
     end
     return nothing, nothing, nothing, nothing, nothing
 end

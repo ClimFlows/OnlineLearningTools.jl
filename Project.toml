@@ -1,14 +1,14 @@
 name = "OnlineLearningTools"
 uuid = "92085879-9f60-489a-bbcc-711af821df73"
 authors = ["Thomas Dubos <thomas.dubos@polytechnique.edu> and contributors"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 Enzyme = "7da242da-08ed-463a-9acd-ee780be4f1d9"
 
 [compat]
 Enzyme = "0.13"
-julia = "1.6.7"
+julia = "1.10"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
