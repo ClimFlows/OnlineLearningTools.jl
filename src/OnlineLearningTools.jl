@@ -1,9 +1,9 @@
 module OnlineLearningTools
 
-using Enzyme: Reverse, Annotation, Active, Const, DuplicatedNoNeed, autodiff, set_runtime_activity
+using Enzyme: Reverse, Annotation, Active, Const, DuplicatedNoNeed, Duplicated, autodiff, set_runtime_activity
 
 using Enzyme.EnzymeRules: RevConfig, AugmentedReturn
-import Enzyme.EnzymeRules: reverse, augmented_primal
+import Enzyme.EnzymeRules: reverse, augmented_primal, needs_primal
 
 """
     c = rcopy(x)
