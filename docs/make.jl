@@ -8,7 +8,7 @@ makedocs(;
     authors="Thomas Dubos <thomas.dubos@polytechnique.edu> and contributors",
     sitename="OnlineLearningTools.jl",
     format=Documenter.HTML(;
-        canonical="https://dubosipsl.github.io/OnlineLearningTools.jl",
+        canonical="https://ClimFlows.github.io/OnlineLearningTools.jl",
         edit_link="main",
         assets=String[],
     ),
@@ -18,6 +18,6 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/dubosipsl/OnlineLearningTools.jl",
+    repo="github.com/ClimFlows/OnlineLearningTools.jl",
     devbranch="main",
 )
